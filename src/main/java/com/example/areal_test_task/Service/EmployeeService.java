@@ -13,6 +13,12 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    // Получить сотрудника по id
+    public Employee getById(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Сотрудник не найден"));
+    }
+
     // получить всех сотрудников
     public List<Employee> getAll() {
         return employeeRepository.findAll();
