@@ -4,24 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Учет сотрудников</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
 </head>
 <body>
 
 <h1>Учет сотрудников</h1>
 
 <!-- Фильтры -->
+<!-- Фильтры -->
 <form th:action="@{/employees}" method="get">
-    <select name="departmentId" th:field="*{departmentId}"
+    <select name="departmentId"
             th:onchange="if(this.value!=''){document.getElementsByName('positionId')[0].disabled=true}else{document.getElementsByName('positionId')[0].disabled=false}">
         <option value="">Выберите отдел</option>
-        <option th:each="dep : ${departments}" th:value="${dep.id}" th:text="${dep.name}"></option>
+        <option th:each="dep : ${departments}"
+                th:value="${dep.id}"
+                th:text="${dep.name}"
+                th:selected="${param.departmentId != null && param.departmentId[0] == dep.id.toString()}">
+        </option>
     </select>
 
-    <select name="positionId" th:field="*{positionId}"
+    <select name="positionId"
             th:onchange="if(this.value!=''){document.getElementsByName('departmentId')[0].disabled=true}else{document.getElementsByName('departmentId')[0].disabled=false}">
         <option value="">Выберите должность</option>
-        <option th:each="pos : ${positions}" th:value="${pos.id}" th:text="${pos.name}"></option>
+        <option th:each="pos : ${positions}"
+                th:value="${pos.id}"
+                th:text="${pos.name}"
+                th:selected="${param.positionId != null && param.positionId[0] == pos.id.toString()}">
+        </option>
     </select>
 
     <button type="submit">Фильтровать</button>

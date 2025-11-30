@@ -1,57 +1,60 @@
 <!DOCTYPE html>
-<html lang="ru"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Создать нового сотрудника</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Создание сотрудника</title>
 </head>
 <body>
-
-<h1>Создать нового сотрудника</h1>
+<h1>Создание нового сотрудника</h1>
 
 <form th:action="@{/employees/create}" th:object="${employee}" method="post">
+    <p>
+        ФИО: <input type="text" th:field="*{fullName}" />
+    </p>
+    <p>
+        Дата рождения: <input type="date" th:field="*{birthDate}" />
+    </p>
+    <p>
+        Паспорт: <input type="text" th:field="*{passportNumber}" />
+    </p>
+    <p>
+        Контакты: <input type="text" th:field="*{contactInfo}" />
+    </p>
+    <p>
+        Адрес: <input type="text" th:field="*{address}" />
+    </p>
+    <p>
+        Зарплата: <input type="number" th:field="*{salary}" step="0.01" />
+    </p>
+    <p>
+        Дата принятия: <input type="date" th:field="*{hireDate}" />
+    </p>
+    <p>
+        Отдел:
+        <select th:field="*{department.id}">
+            <option value="">--Выберите отдел--</option>
+            <option th:each="dep : ${departments}"
+                    th:value="${dep.id}"
+                    th:text="${dep.name}">
+            </option>
+        </select>
+    </p>
+    <p>
+        Должность:
+        <select th:field="*{position.id}">
+            <option value="">--Выберите должность--</option>
+            <option th:each="pos : ${positions}"
+                    th:value="${pos.id}"
+                    th:text="${pos.name}">
+            </option>
+        </select>
+    </p>
 
-    <label>ФИО:</label>
-    <input type="text" th:field="*{fullName}" required><br>
-
-    <label>Дата рождения:</label>
-    <input type="date" th:field="*{birthDate}" required><br>
-
-    <label>Серия/номер паспорта:</label>
-    <!-- Серия/номер паспорта: XXXX XXXXXX -->
-    <input type="text" th:field="*{passportNumber}" placeholder="XXXX XXXXXX"
-           pattern="\d{4} \d{6}" title="Введите серию и номер паспорта в формате XXXX XXXXXX" required>
-
-
-    <label>Контактная информация:</label>
-    <!-- Контактная информация: +7 (999) 999-99-99 -->
-    <input type="text" th:field="*{contactInfo}" placeholder="+7 (999) 999-99-99"
-           pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" title="Введите номер в формате +7 (999) 999-99-99" required>
-
-    <label>Адрес проживания:</label>
-    <input type="text" th:field="*{address}" required><br>
-
-    <label>Отдел:</label>
-    <select th:field="*{department}" required>
-        <option th:each="dep : ${departments}" th:value="${dep}" th:text="${dep.name}"></option>
-    </select><br>
-
-    <label>Должность:</label>
-    <select th:field="*{position}" required>
-        <option th:each="pos : ${positions}" th:value="${pos}" th:text="${pos.name}"></option>
-    </select><br>
-
-    <label>Зарплата:</label>
-    <input type="number" th:field="*{salary}" min="0" required><br>
-
-    <label>Дата принятия на работу:</label>
-    <input type="date" th:field="*{hireDate}" required><br>
-
-    <button type="submit">Сохранить</button>
+    <p>
+        <button type="submit">Создать</button>
+    </p>
 </form>
 
 <p><a th:href="@{/employees}">Назад к списку сотрудников</a></p>
-
 </body>
 </html>
