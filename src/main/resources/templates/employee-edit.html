@@ -2,14 +2,14 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Создание сотрудника</title>
+    <title>Редактирование сотрудника</title>
     <script src="/js/mask.js"></script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<h1>Создание нового сотрудника</h1>
+<h1>Редактирование сотрудника</h1>
 
-<form th:action="@{/employees/create}" th:object="${employee}" method="post">
+<form th:action="@{/employees/{id}(id=${employee.id})}" th:object="${employee}" method="post">
     <p>
         ФИО: <input type="text" th:field="*{fullName}" required/>
     </p>
@@ -26,36 +26,41 @@
         Адрес: <input type="text" th:field="*{address}" required/>
     </p>
     <p>
+        Отдел:
+        <select th:field="*{department}" required>
+            <option value="">--Выберите отдел--</option>
+            <option th:each="dep : ${departments}"
+                    th:value="${dep.id}"
+                    th:text="${dep.name}"
+                    th:selected="${dep.id == employee.department.id}">
+            </option>
+        </select>
+    </p>
+    <p>
+        Должность:
+        <select th:field="*{position}" required>
+            <option value="">--Выберите должность--</option>
+            <option th:each="pos : ${positions}"
+                    th:value="${pos.id}"
+                    th:text="${pos.name}"
+                    th:selected="${pos.id == employee.position.id}">
+            </option>
+        </select>
+    </p>
+    <p>
         Зарплата: <input type="number" th:field="*{salary}" step="0.01" required/>
     </p>
     <p>
         Дата принятия: <input type="date" th:field="*{hireDate}" required/>
     </p>
     <p>
-        Отдел:
-        <select th:field="*{department.id}" required>
-            <option value="">--Выберите отдел--</option>
-            <option th:each="dep : ${departments}"
-                    th:value="${dep.id}"
-                    th:text="${dep.name}">
-            </option>
-        </select>
+        Уволен: <input type="checkbox" th:field="*{fired}"/>
     </p>
     <p>
-        Должность:
-        <select th:field="*{position.id}" required>
-            <option value="">--Выберите должность--</option>
-            <option th:each="pos : ${positions}"
-                    th:value="${pos.id}"
-                    th:text="${pos.name}">
-            </option>
-        </select>
-    </p>
-    <p>
-        <button type="submit">Создать</button>
+        <button type="submit">Сохранить изменения</button>
+        <a th:href="@{/employees}">Отмена</a>
     </p>
 </form>
 
-<p><a th:href="@{/employees}">Назад к списку сотрудников</a></p>
 </body>
 </html>

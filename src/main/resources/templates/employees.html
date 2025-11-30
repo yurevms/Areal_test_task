@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Учет сотрудников</title>
-
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -37,7 +37,7 @@
 </form>
 
 <!-- Поиск по ФИО -->
-<form th:action="@{/employees/findByName}" method="get" style="margin-top: 10px;">
+<form th:action="@{/employees/findByName}" method="get" style="margin-top: 5px;">
     <input type="text" name="fullName" placeholder="Поиск по ФИО сотрудника">
     <button type="submit">🔍</button>
 </form>
@@ -70,18 +70,18 @@
         <td th:text="${emp.position.name}"></td>
         <td th:text="${emp.salary}"></td>
         <td th:text="${emp.hireDate}"></td>
-        <td th:text="${emp.fired ? 'Уволен' : ''}"></td>
+        <td th:text="${emp.fired ? 'Уволен' : 'Действующий'}"></td>
         <td>
             <!-- Редактирование только если сотрудник не уволен -->
             <a th:href="@{/employees/{id}(id=${emp.id})}" th:if="${!emp.fired}">✏️</a>
 
             <!-- Уволить только если сотрудник не уволен -->
-            <form th:action="@{/employees/fire/{id}(id=${emp.id})}" method="post" th:if="${!emp.fired}" style="display:inline;">
+            <form th:action="@{/employees/fire/{id}(id=${emp.id})}" method="post" th:if="${!emp.fired}">
                 <button type="submit">Уволить</button>
             </form>
 
             <!-- Если сотрудник уволен, показываем метку -->
-            <span th:if="${emp.fired}">Уволен</span>
+            <span th:if="${emp.fired}"> ❌</span>
         </td>
 
     </tr>
