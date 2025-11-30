@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Учет сотрудников</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<h1>Учет сотрудников</h1>
+
+<!-- Фильтры -->
+<form th:action="@{/employees}" method="get">
+    <select name="departmentId" th:field="*{departmentId}"
+            th:onchange="if(this.value!=''){document.getElementsByName('positionId')[0].disabled=true}else{document.getElementsByName('positionId')[0].disabled=false}">
+        <option value="">Выберите отдел</option>
+        <option th:each="dep : ${departments}" th:value="${dep.id}" th:text="${dep.name}"></option>
+    </select>
+
+    <select name="positionId" th:field="*{positionId}"
+            th:onchange="if(this.value!=''){document.getElementsByName('departmentId')[0].disabled=true}else{document.getElementsByName('departmentId')[0].disabled=false}">
+        <option value="">Выберите должность</option>
+        <option th:each="pos : ${positions}" th:value="${pos.id}" th:text="${pos.name}"></option>
+    </select>
+
+    <button type="submit">Фильтровать</button>
+</form>
+
+<!-- Поиск по ФИО -->
+<form th:action="@{/employees/findByName}" method="get" style="margin-top: 10px;">
+    <input type="text" name="fullName" placeholder="Поиск по ФИО сотрудника">
+    <button type="submit">🔍</button>
+</form>
+
+<!-- Таблица сотрудников -->
+<table>
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        <th>Дата рождения</th>
+        <th>Паспорт</th>
+        <th>Контакты</th>
+        <th>Адрес</th>
+        <th>Отдел</th>
+        <th>Должность</th>
+        <th>Зарплата</th>
+        <th>Дата принятия</th>
+        <th>Статус</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="emp : ${employees}">
+        <td th:text="${emp.fullName}"></td>
+        <td th:text="${emp.birthDate}"></td>
+        <td th:text="${emp.passportNumber}"></td>
+        <td th:text="${emp.contactInfo}"></td>
+        <td th:text="${emp.address}"></td>
+        <td th:text="${emp.department.name}"></td>
+        <td th:text="${emp.position.name}"></td>
+        <td th:text="${emp.salary}"></td>
+        <td th:text="${emp.hireDate}"></td>
+        <td th:text="${emp.fired ? 'Уволен' : ''}"></td>
+        <td>
+            <!-- Редактирование только если сотрудник не уволен -->
+            <a th:href="@{/employees/{id}(id=${emp.id})}" th:if="${!emp.fired}">✏️</a>
+
+            <!-- Уволить только если сотрудник не уволен -->
+            <form th:action="@{/employees/fire/{id}(id=${emp.id})}" method="post" th:if="${!emp.fired}" style="display:inline;">
+                <button type="submit">Уволить</button>
+            </form>
+
+            <!-- Если сотрудник уволен, показываем метку -->
+            <span th:if="${emp.fired}">Уволен</span>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+<!-- Кнопка создания нового сотрудника -->
+<p><a th:href="@{/employees/create}">Создать нового сотрудника</a></p>
+
+</body>
+</html>

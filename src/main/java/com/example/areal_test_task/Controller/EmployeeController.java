@@ -39,7 +39,7 @@ public class EmployeeController {
         model.addAttribute("departments", departmentService.getAll());
         model.addAttribute("positions", positionService.getAll());
 
-        return "employees"; // шаблон employees.html
+        return "employees";
     }
 
     // Поиск по ФИО
@@ -59,7 +59,7 @@ public class EmployeeController {
         model.addAttribute("employee", employee);
         model.addAttribute("departments", departmentService.getAll());
         model.addAttribute("positions", positionService.getAll());
-        return "employee-edit"; // шаблон employee-edit.html
+        return "employee-edit";
     }
 
     // Обновление сотрудника
@@ -83,7 +83,7 @@ public class EmployeeController {
         model.addAttribute("employee", new Employee());
         model.addAttribute("departments", departmentService.getAll());
         model.addAttribute("positions", positionService.getAll());
-        return "employee-create"; // шаблон employee-create.html
+        return "employee-create";
     }
 
     @PostMapping("/create")
